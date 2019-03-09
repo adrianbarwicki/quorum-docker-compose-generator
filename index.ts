@@ -317,6 +317,6 @@ export const generateDockerFile = (params: Args): { peers: string, services: str
   };
 };
 
-export const renderCompose = async (params: { peers: string; }) => ejs.render(template, params, {});
+export const renderCompose = (params: { peers: string; }) => ejs.render(template, params, {});
 
-export const generate = async (params: Args) => renderCompose(generateDockerFile(params));
+export const generate = (params: Args) => renderCompose(generateDockerFile(params));
