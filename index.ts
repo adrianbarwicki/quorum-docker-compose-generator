@@ -2,7 +2,7 @@ import * as ejs from "ejs";
 
 type Args = { noOfNodes: number };
 
-const generateDockerFile = (params: Args): { peers: string, services: string; volumes: string; } => {
+export const generateDockerFile = (params: Args): { peers: string, services: string; volumes: string; } => {
   let peers = [];
   let services = [];
   let volumes = [];
@@ -54,10 +54,14 @@ const generateDockerFile = (params: Args): { peers: string, services: string; vo
   };
 };
 
-const renderCompose = (params: { peers: string; }) => {
+export const renderCompose = async (params: { peers: string; }) => new Promise((resolve, reject) => {
   ejs.renderFile("./dockerComposeTemplate.yaml", params, {}, (err, str) => {
-    console.log(str);
-  });
-};
+    if (err) {
+      return reject(err);
+    }
 
-renderCompose(generateDockerFile({ noOfNodes: 5 }));
+    resolve(str);
+  });
+});
+
+export const generate = async (params: Args) => renderCompose(generateDockerFile(params));
